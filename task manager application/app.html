@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Advanced Task Manager</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+    body { background: #0f172a; color: #e2e8f0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+
+    .app { width: 100%; max-width: 600px; background: #1e293b; padding: 20px; border-radius: 16px; }
+
+    h1 { text-align: center; margin-bottom: 15px; }
+
+    .input-group { display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; }
+
+    input, select, button { padding: 10px; border-radius: 8px; border: none; }
+
+    button { cursor: pointer; font-weight: bold; }
+
+    .controls { display: flex; gap: 10px; margin-bottom: 10px; }
+
+    ul { list-style: none; }
+
+    li { display: flex; justify-content: space-between; align-items: center; padding: 12px; margin-bottom: 8px; border-radius: 10px; }
+
+    li.high { background: #7f1d1d; }
+    li.medium { background: #78350f; }
+    li.low { background: #064e3b; }
+
+    li.completed span { text-decoration: line-through; opacity: 0.6; }
+
+    .actions { display: flex; gap: 5px; }
+
+    .complete-btn { background: #3b82f6; color: white; }
+    .delete-btn { background: #ef4444; color: white; }
+
+    .meta { font-size: 12px; opacity: 0.7; }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <h1>Task Manager</h1>
+
+    <div class="input-group">
+      <input id="taskInput" type="text" placeholder="Task title" />
+      <select id="priorityInput">
+        <option value="low">Low</option>
+        <option value="medium">Medium</option>
+        <option value="high">High</option>
+      </select>
+      <input id="dateInput" type="date" />
+      <button id="addTaskBtn">Add Task</button>
+    </div>
+
+    <div class="controls">
+      <select id="filter">
+        <option value="all">All</option>
+        <option value="completed">Completed</option>
+        <option value="pending">Pending</option>
+      </select>
+      <button id="sortBtn">Sort A-Z</button>
+    </div>
+
+    <ul id="taskList"></ul>
+  </div>
+
+  <script>
+    const taskInput = document.getElementById('taskInput');
+    const priorityInput = document.getElementById('priorityInput');
+    const dateInput = document.getElementById('dateInput');
+    const addTaskBtn = document.getElementById('addTaskBtn');
+    const taskList = document.getElementById('taskList');
+    const filter = document.getElementById('filter');
+    const sortBtn = document.getElementById('sortBtn');
+
+    /**
+     * @typedef {Object} Task
+     * @property {string} id Unique identifier
+     * @property {string} text Task title
+     * @property {'low'|'medium'|'high'} priority Priority level
+     * @property {string} date ISO date string
+     * @property {boolean} completed Completion status
+     */
+
+    /** @type {Task[]} */
+    let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+    /**
+     * Save tasks to localStorage
+     * @returns {void}
+     */
+    function saveTasks() {
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+    }
+
+    /**
+     * Generate unique ID
+     * @returns {string}
+     */
+    function generateId() {
+      return crypto.randomUUID();
+    }
+
+    /**
+     * Calculate days left until due date
+     * @param {string} date ISO date string
+     * @returns {number|string} Days remaining or empty string
+     */
+    function daysLeft(date) {
+      if (!date) return '';
+      const now = new Date();
+      const due = new Date(date);
+      const diff = due - now;
+      return Math.ceil(diff / (1000 * 60 * 60 * 24));
+    }
+
+    /**
+     * Sanitize text to prevent XSS
+     * @param {string} str
+     * @returns {string}
+     */
+    function sanitize(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    /**
+     * Render tasks to DOM
+     * @returns {void}
+     */
+    function renderTasks() {
+      taskList.innerHTML = '';
+
+      let filtered = tasks.filter(task => {
+        if (filter.value === 'completed') return task.completed;
+        if (filter.value === 'pending') return !task.completed;
+        return true;
+      });
+
+      filtered.forEach(task => {
+        const li = document.createElement('li');
+        li.classList.add(task.priority);
+        if (task.completed) li.classList.add('completed');
+
+        const span = document.createElement('span');
+        span.innerHTML = sanitize(task.text);
+
+        const meta = document.createElement('div');
+        meta.className = 'meta';
+        const days = daysLeft(task.date);
+        meta.textContent = task.date ? `${days} day(s) left` : '';
+
+        const left = document.createElement('div');
+        left.appendChild(span);
+        left.appendChild(meta);
+
+        const actions = document.createElement('div');
+        actions.className = 'actions';
+
+        const completeBtn = document.createElement('button');
+        completeBtn.textContent = '✔';
+        completeBtn.className = 'complete-btn';
+        completeBtn.onclick = () => toggleTask(task.id);
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = '✖';
+        deleteBtn.className = 'delete-btn';
+        deleteBtn.onclick = () => deleteTask(task.id);
+
+        actions.appendChild(completeBtn);
+        actions.appendChild(deleteBtn);
+
+        li.appendChild(left);
+        li.appendChild(actions);
+
+        taskList.appendChild(li);
+      });
+    }
+
+    /**
+     * Add a new task
+     * @returns {void}
+     */
+    function addTask() {
+      const text = taskInput.value.trim();
+      if (!text) return;
+
+      const newTask = {
+        id: generateId(),
+        text,
+        priority: priorityInput.value,
+        date: dateInput.value,
+        completed: false
+      };
+
+      tasks.push(newTask);
+
+      taskInput.value = '';
+      dateInput.value = '';
+
+      saveTasks();
+      renderTasks();
+    }
+
+    /**
+     * Delete a task by ID
+     * @param {string} id
+     * @returns {void}
+     */
+    function deleteTask(id) {
+      tasks = tasks.filter(task => task.id !== id);
+      saveTasks();
+      renderTasks();
+    }
+
+    /**
+     * Toggle task completion
+     * @param {string} id
+     * @returns {void}
+     */
+    function toggleTask(id) {
+      tasks = tasks.map(task =>
+        task.id === id ? { ...task, completed: !task.completed } : task
+      );
+      saveTasks();
+      renderTasks();
+    }
+
+    addTaskBtn.onclick = addTask;
+
+    sortBtn.onclick = () => {
+      tasks.sort((a, b) => a.text.localeCompare(b.text));
+      saveTasks();
+      renderTasks();
+    };
+
+    filter.onchange = renderTasks;
+
+    renderTasks();
+  </script>
+</body>
+</html>

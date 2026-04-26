@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Isaac Yusuf | Frontend Developer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+</head>
+<body class="bg-gray-950 text-white font-sans scroll-smooth">
+
+<header class="p-6 flex justify-between items-center border-b border-gray-800 sticky top-0 bg-gray-950/80 backdrop-blur">
+  <h1 class="text-2xl font-bold">Isaac Yusuf</h1>
+  <nav class="space-x-6 text-sm">
+    <a href="#about" class="hover:text-blue-400">About</a>
+    <a href="#skills" class="hover:text-blue-400">Skills</a>
+    <a href="#projects" class="hover:text-blue-400">Projects</a>
+    <a href="#experience" class="hover:text-blue-400">Experience</a>
+    <a href="#contact" class="hover:text-blue-400">Contact</a>
+  </nav>
+</header>
+
+<section class="text-center py-24 px-4" data-aos="fade-up">
+  <img src="./images/Profile picture.PNG" class="w-32 h-32 rounded-full mx-auto mb-6 border-4 border-blue-500">
+  <h2 class="text-5xl font-extrabold mb-4">Hi, I'm Isaac Yusuf</h2>
+  <p class="text-xl text-gray-400 mb-6">Frontend Developer | Problem Solver | Creative Thinker</p>
+  <div class="space-x-4 mb-6">
+    <a href="#projects" class="bg-blue-600 px-6 py-3 rounded-xl hover:bg-blue-500">View Work</a>
+    <a href="./docs/Isaac_Yusuf_Tech_Focused_Updated_CV.pdf" download class="border border-gray-600 px-6 py-3 rounded-xl hover:border-white">Download CV</a>
+  </div>
+  <div class="flex justify-center space-x-6 text-xl">
+    <a href="https://github.com/isaacyusuf10-glitch" target="_blank" class="hover:text-blue-400">GitHub</a>
+    <a href="https://linkedin.com/in/Isaac Yusuf" target="_blank" class="hover:text-blue-400">LinkedIn</a>
+  </div>
+</section>
+
+<section id="about" class="max-w-4xl mx-auto px-6 py-16" data-aos="fade-up">
+  <h3 class="text-3xl font-semibold mb-6">About Me</h3>
+  <p class="text-gray-400 leading-relaxed">
+    I am a passionate frontend developer focused on building clean, responsive and user-friendly web applications. I enjoy solving real-world problems and improving user experiences through thoughtful design and efficient code.
+  </p>
+</section>
+
+<section id="skills" class="bg-gray-900 py-16 px-6" data-aos="fade-up">
+  <div class="max-w-5xl mx-auto">
+    <h3 class="text-3xl font-semibold mb-8">Skills</h3>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+      <div class="bg-gray-800 p-4 rounded-xl text-center">HTML</div>
+      <div class="bg-gray-800 p-4 rounded-xl text-center">CSS / Tailwind</div>
+      <div class="bg-gray-800 p-4 rounded-xl text-center">JavaScript</div>
+      <div class="bg-gray-800 p-4 rounded-xl text-center">Node.js</div>
+      <div class="bg-gray-800 p-4 rounded-xl text-center">Git</div>
+      <div class="bg-gray-800 p-4 rounded-xl text-center">APIs</div>
+      <div class="bg-gray-800 p-4 rounded-xl text-center">UI/UX</div>
+    </div>
+  </div>
+</section>
+
+<section id="projects" class="max-w-6xl mx-auto px-6 py-16" data-aos="fade-up">
+  <h3 class="text-3xl font-semibold mb-10">Projects</h3>
+  <div class="grid md:grid-cols-3 gap-8">
+    <div class="bg-gray-900 p-6 rounded-2xl hover:scale-105 transition">
+      <h4 class="text-xl font-bold mb-2">Task Manager App</h4>
+      <p class="text-gray-400 mb-4">Built with JavaScript, supports CRUD operations and local storage.</p>
+      <a href="./task manager application/app.html" class="text-blue-400">Live Demo →</a>
+    </div>
+    <div class="bg-gray-900 p-6 rounded-2xl hover:scale-105 transition">
+      <h4 class="text-xl font-bold mb-2">Portfolio Website</h4>
+      <p class="text-gray-400 mb-4">Responsive portfolio built with Tailwind CSS.</p>
+      <a href="./code/Document 1.docx" class="text-blue-400">View Code →</a>
+
+    </div>
+  </div>
+</section>
+
+<section id="experience" class="bg-gray-900 py-16 px-6" data-aos="fade-up">
+  <div class="max-w-5xl mx-auto">
+    <h3 class="text-3xl font-semibold mb-8">Experience</h3>
+    <div class="space-y-6">
+      <div>
+        <h4 class="text-xl font-bold">Frontend Developer - Freelancer</h4>
+        <p class="text-gray-400">2023 - Present</p>
+        <p class="text-gray-500">Developed responsive websites and applications for clients.</p>
+      </div>
+      <div>
+        <h4 class="text-xl font-bold">Intern - Lafia Clinic</h4>
+        <p class="text-gray-400">2021 - 2023</p>
+        <p class="text-gray-500">Handled lab data collection and records.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="text-center py-16 px-6" data-aos="fade-up">
+  <h3 class="text-3xl font-semibold mb-6">Contact</h3>
+  <p class="text-gray-400 mb-4">Let's work together!</p>
+  <form class="max-w-xl mx-auto space-y-4">
+    <input type="text" placeholder="Your Name" class="w-full p-3 rounded bg-gray-800 border border-gray-700" required>
+    <input type="email" placeholder="Your Email" class="w-full p-3 rounded bg-gray-800 border border-gray-700" required>
+    <textarea placeholder="Your Message" class="w-full p-3 rounded bg-gray-800 border border-gray-700" required></textarea>
+    <button type="submit" class="bg-blue-600 px-6 py-3 rounded-xl hover:bg-blue-500">Send Message</button>
+  </form>
+  <p class="mt-6 text-gray-400">Email: isaacyusuf10@email.com | Phone: 08162026319</p>
+</section>
+
+<footer class="text-center p-6 text-gray-600 border-t border-gray-800">
+  © 2026 ISAAC YUSUF
+</footer>
+
+<script>
+AOS.init({ duration: 1000, once: true });
+</script>
+
+</body>
+</html>
